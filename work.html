@@ -1,0 +1,1121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Playground | Cruz Plamondon</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Playfair+Display:ital@1&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="stylesheets/main.css" />
+
+    <style>
+      /* 
+        =====================================================================
+        GRADE 9 EXPLANATION: THE PLAYGROUND ECOSYSTEM
+        These classes structure our asynchronous lab testing interfaces.
+        Since these elements are only executed inside work.html, isolating them
+        internally preserves clean code separation standards.
+        ======================================================================
+      */
+
+      .title-menu-desc {
+        margin-top: 2.5rem;
+        font-family: "Inter", sans-serif;
+        font-size: 1.6rem;
+        line-height: 1.6;
+        color: var(--text-primary);
+        opacity: 0.85;
+        max-width: 35rem;
+      }
+
+      .editorial-split-row.reverse-row .title-menu-desc {
+        margin-left: auto;
+        text-align: right;
+      }
+
+      .editorial-split-row {
+        display: grid;
+        grid-template-columns: 1fr 1.3fr;
+        gap: 10rem;
+        padding: 10rem 0;
+        border-bottom: var(--border-thin);
+        align-items: center;
+      }
+
+      .editorial-split-row.reverse-row {
+        grid-template-columns: 1.3fr 1fr;
+      }
+
+      .work-title-panel {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .editorial-split-row.reverse-row .work-title-panel {
+        order: 2;
+        text-align: right;
+        align-items: flex-end;
+      }
+
+      .work-playground-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        width: 100%;
+      }
+
+      .editorial-split-row.reverse-row .work-playground-panel {
+        order: 1;
+      }
+
+      .interactive-sandbox-card {
+        background-color: var(--bg-secondary);
+        border: var(--border-thin);
+        padding: 4rem;
+        width: 100%;
+      }
+
+      .sandbox-headline-track {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        border-left: 4px solid var(--accent-color);
+        padding-left: 1.5rem;
+      }
+
+      .editorial-split-row.reverse-row .sandbox-headline-track {
+        border-left: none;
+        border-right: 4px solid var(--accent-color);
+        padding-left: 0;
+        padding-right: 1.5rem;
+        justify-content: flex-end;
+      }
+
+      .sandbox-headline-track h3 {
+        font-family: "Inter", sans-serif;
+        font-weight: 800;
+        font-size: 1.8rem;
+        letter-spacing: 0.5px;
+        margin: 0;
+        border-left: none !important;
+        padding-left: 0 !important;
+      }
+
+      .live-test-display {
+        background-color: var(--bg-inverse);
+        color: var(--text-inverse);
+        padding: 3rem;
+        text-align: center;
+        margin-top: 2rem;
+        border: var(--border-thin);
+      }
+
+      .sandbox-input-field {
+        width: 100%;
+        padding: 1.5rem;
+        background-color: var(--bg-primary);
+        border: var(--border-thin);
+        color: var(--text-primary);
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+      }
+
+      .sandbox-input-field:focus {
+        outline: 2px solid var(--accent-color);
+      }
+
+      /* SANDBOX TRACK SPECIFIC COMPONENT STATES */
+      .lab-hover-card {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        transition:
+          transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+          box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        cursor: pointer;
+        will-change: transform, box-shadow;
+      }
+
+      .lab-hover-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 6px 6px 0px var(--accent-color);
+      }
+
+      .lab-logic-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .lab-logic-title {
+        font-weight: bold;
+        font-size: 1.6rem;
+        color: var(--text-inverse);
+      }
+      .lab-logic-label {
+        color: var(--text-inverse);
+        font-weight: 600;
+      }
+      .lab-logic-btn {
+        color: var(--text-inverse);
+        border-color: var(--border-color);
+        padding: 1.2rem;
+      }
+      .lab-logic-result {
+        font-family: monospace;
+        font-size: 1.4rem;
+        color: var(--accent-color);
+        font-weight: bold;
+      }
+
+      .lab-fluid-box {
+        padding: 3rem;
+        overflow: hidden;
+        resize: horizontal;
+        background: var(--bg-primary);
+        border: var(--border-thin);
+      }
+      .lab-fluid-text {
+        font-size: clamp(1.6rem, 2.5vw, 3.5rem);
+        line-height: 1;
+        font-family: "Inter", sans-serif;
+        font-weight: 800;
+      }
+
+      @media (max-width: 900px) {
+        .editorial-split-row,
+        .editorial-split-row.reverse-row {
+          grid-template-columns: 1fr;
+          gap: 4rem;
+          padding: 6rem 0;
+        }
+        .editorial-split-row.reverse-row .work-title-panel {
+          order: 1;
+          text-align: left;
+          align-items: flex-start;
+        }
+        .editorial-split-row.reverse-row .work-playground-panel {
+          order: 2;
+        }
+        .editorial-split-row.reverse-row .sandbox-headline-track {
+          border-right: none;
+          border-left: 4px solid var(--accent-color);
+          padding-right: 0;
+          padding-left: 1.5rem;
+          justify-content: flex-start;
+        }
+        .interactive-sandbox-card {
+          padding: 2.5rem;
+        }
+        .title-menu-desc {
+          max-width: 100%;
+          font-size: 1.5rem;
+        }
+        .editorial-split-row.reverse-row .title-menu-desc {
+          text-align: left;
+          margin-left: 0;
+        }
+      }
+
+      /* =====================================================================
+         GRADE 9 EXPLANATION: WIDESCREEN HERO GRAPHIC OVERRIDE
+         This gives our missing '.hero-title-work' class its styling rules 
+         on desktop screens. We use clamp() so it scales down beautifully 
+         before hitting the mobile media query break limits.
+         ===================================================================== */
+      .hero-title-work {
+        font-size: clamp(10rem, 14vw, 22rem) !important;
+        font-weight: 800;
+        line-height: 0.85;
+        letter-spacing: -3px;
+        text-transform: uppercase;
+        display: block;
+        color: var(--text-primary);
+      }
+
+      /* Updated to preserve heavy size contrast between titles and body paragraphs */
+      .work-section-heading {
+        font-size: clamp(4.5rem, 6.5vw, 8.5rem) !important;
+        line-height: 0.9;
+        letter-spacing: -1px;
+        margin-top: 1rem;
+      }
+
+      /* =====================================================================
+         REFACTORED TRACK 09 LAYOUT SYSTEMS
+         ===================================================================== */
+      .lab-fullscreen-preview {
+        padding: 0 !important;
+        overflow: hidden !important;
+        height: 350px !important;
+        position: relative !important;
+      }
+
+      #fluid-lab-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
+      /* Unified identifier wrapper holding only functional structural context */
+      #vram-lab-content {
+        z-index: 12 !important;
+      }
+
+      .vram-headline-override {
+        border-left-color: #ffffff !important;
+        margin-bottom: 0 !important;
+      }
+
+      .vram-headline-override h3 {
+        color: #ffffff !important;
+        text-shadow: 0 2px 10px rgb(0, 0, 0);
+      }
+
+      /* Single operational layout class attached to your html markup */
+      .vram-lab-interactive-overlay {
+        position: absolute !important;
+        bottom: 3rem !important;
+        left: 3rem !important;
+        pointer-events: none !important;
+        z-index: 10 !important;
+      }
+
+      /* MISSING TYPOGRAPHY HOOKS (previously unstyled) */
+      .work-large-num {
+        font-family: "Bebas Neue", serif;
+        font-size: 8rem;
+        line-height: 0.8;
+        color: var(--accent-color);
+      }
+
+      .selection-zone {
+        cursor: text;
+      }
+    </style>
+
+    <script>
+      if (localStorage.getItem("system-theme") === "dark") {
+        document.documentElement.classList.add("dark-mode");
+      }
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to Content</a>
+
+    <div id="progress-bar"></div>
+
+    <!-- START: DUAL-CLUSTER GLASS PILL NAVIGATION -->
+    <nav class="nav-glass-pill" id="main-nav-pill" aria-label="Main Navigation">
+      <div class="nav-pill-list" id="nav-pill-list">
+        <div class="nav-lens" id="nav-lens" aria-hidden="true"></div>
+
+        <!-- PRIMARY NAVIGATION CLUSTER -->
+        <ul class="nav-cluster primary-cluster">
+          <li class="nav-item is-active">
+            <a href="index.html" class="nav-icon" aria-label="Homepage">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              </svg>
+            </a>
+            <span class="nav-label">HOME</span>
+          </li>
+
+          <li class="nav-item">
+            <a href="work.html" class="nav-icon" aria-label="Featured Work">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </a>
+            <span class="nav-label">WORK</span>
+            <div class="glass-flyout edge-align-left">
+              <span class="flyout-title">FEATURED WORK</span>
+              <a href="index.html#featured-work">Treaty 1 Architecture</a>
+              <a href="index.html#about">Capabilities Matrix</a>
+              <a href="work.html">Interactive Laboratory</a>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a
+              href="philosophy.html"
+              class="nav-icon"
+              aria-label="Developer Philosophy">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path
+                  d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </a>
+            <span class="nav-label">PHIL</span>
+            <div class="glass-flyout">
+              <span class="flyout-title">PHILOSOPHY</span>
+              <a href="philosophy.html#tenets">The War on Load</a>
+              <a href="philosophy.html#tenets">First Eye Psychology</a>
+              <a href="philosophy.html#tenets">Chameleon Aesthetic</a>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a
+              href="contact.html"
+              class="nav-icon"
+              aria-label="Contact Operator">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </a>
+            <span class="nav-label">EMAIL</span>
+            <div class="glass-flyout">
+              <span class="flyout-title">EMAIL & CONTACT</span>
+              <a href="contact.html">Direct message</a>
+              <a href="contact.html#personal-specs">Operator profile</a>
+              <a href="https://github.com/cruz-in" target="_blank"
+                >GitHub Repository</a
+              >
+            </div>
+          </li>
+        </ul>
+
+        <!-- SYSTEM CONTROLS CLUSTER -->
+        <ul class="nav-cluster system-cluster">
+          <li class="nav-item">
+            <button class="nav-icon" aria-label="System Settings">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </button>
+            <div class="glass-flyout edge-align-right">
+              <span class="flyout-title">SYSTEM PREFS</span>
+
+              <button
+                class="composite-search-btn interactive-button-action"
+                aria-label="Open Search">
+                <div class="search-glass-puck">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </div>
+                <div class="search-solid-pill">SEARCH PLATFORM</div>
+              </button>
+
+              <div class="glass-toggle-wrapper margin-top-1">
+                <input
+                  type="checkbox"
+                  id="theme-switch"
+                  class="theme-switch-input"
+                  aria-label="Toggle Dark Mode" />
+                <label for="theme-switch" class="glass-toggle-label">
+                  <span class="glass-toggle-knob">
+                    <svg
+                      class="toggle-sun"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg
+                      class="toggle-moon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <path
+                        d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                  </span>
+                </label>
+                <span class="toggle-label-text">DARK MODE</span>
+              </div>
+
+              <div class="glass-toggle-wrapper margin-top-1">
+                <input
+                  type="checkbox"
+                  id="audio-switch"
+                  class="audio-switch-input theme-switch-input"
+                  aria-label="Toggle System Audio Mute" />
+                <label for="audio-switch" class="glass-toggle-label">
+                  <span class="glass-toggle-knob">
+                    <svg
+                      class="toggle-audio-on"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <path
+                        d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <svg
+                      class="toggle-audio-off"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <line x1="23" y1="9" x2="17" y2="15"></line>
+                      <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                  </span>
+                </label>
+                <span class="toggle-label-text">MUTE AUDIO</span>
+              </div>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <button
+              id="stealth-toggle-btn"
+              class="nav-icon"
+              aria-label="Hide UI">
+              <svg
+                class="icon-eye-off"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+              <svg
+                class="icon-eye"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                style="display: none">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Search Overlay Component -->
+    <div class="drawer-overlay" aria-hidden="true"></div>
+    <section class="drawer-panel" aria-hidden="true">
+      <div class="drawer-header">
+        <form class="drawer-form">
+          <label for="drawer-search-input" class="sr-only">Search</label>
+          <input
+            type="text"
+            id="drawer-search-input"
+            placeholder="SEARCH PORTFOLIO..."
+            autocomplete="off"
+            disabled />
+        </form>
+      </div>
+      <section class="drawer-content">
+        <h4>QUICK LINKS</h4>
+        <ul class="drawer-results"></ul>
+      </section>
+    </section>
+
+    <main id="main-content">
+      <!-- 01. Playground Hero Viewport -->
+      <section class="hero-section accent-right border-bottom">
+        <div class="hero-left">
+          <section>
+            <h1 class="margin-zero hero-title-work">
+              INTERACTIVE<span class="line-break"></span
+              ><span class="block-span serif-italic">playground.</span>
+            </h1>
+            <p class="hero-subtitle">
+              THE PERFORMANCE PORTFOLIO<span class="accent-dot">.</span>
+            </p>
+          </section>
+          <div class="scroll-wrapper">
+            <a
+              href="#arsenal-track"
+              class="btn-scroll"
+              aria-label="Scroll down to Technical Arsenal"
+              >&darr;</a
+            >
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="color-block-accent"></div>
+
+          <section class="padding-box card-dark hero-terminal">
+            <h3 class="terminal-title">[ STATUS: ACTIVE TESTS ]</h3>
+            <p class="body-large top-1rem">
+              The structural baseline. Demonstrating native DOM manipulation and
+              rigid CSS grid constraints without relying on bloated external
+              libraries.
+            </p>
+          </section>
+        </div>
+      </section>
+
+      <section id="arsenal-track" class="container">
+        <div class="editorial-split-row">
+          <div class="work-title-panel">
+            <span class="work-large-num" aria-hidden="true">01</span>
+            <h2 class="work-section-heading">
+              Live Capabilities
+              <span class="block-span serif-italic">showcase.</span>
+            </h2>
+            <p class="title-menu-desc">
+              The structural baseline. Demonstrating native DOM manipulation and
+              rigid CSS grid constraints without relying on bloated external
+              libraries.
+            </p>
+          </div>
+
+          <div class="work-playground-panel">
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3 class="project-features-title">
+                  // CORE LANGUAGES &amp; ENGINE
+                </h3>
+              </div>
+              <p class="body-large">
+                Your platform is built from the ground up using clean,
+                industry-standard website text frameworks, custom visual styling
+                structures, and pure, modern web programming instructions. By
+                actively turning away from heavy, pre-made software packages and
+                generic website builders that slow down your pages, your website
+                stays completely independent and lightweight. This direct
+                approach ensures that your loading speeds remain exceptionally
+                fast on all networks and your background website files stay
+                perfectly clean, organized, and highly secure from external
+                software bugs.
+              </p>
+            </section>
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3 class="project-features-title">
+                  // MATHEMATICAL SCALING MATH
+                </h3>
+              </div>
+              <p class="body-large">
+                This website layout is built using highly flexible, built-in
+                structural grid lines combined with smart mathematical equations
+                that calculate dimensions automatically. Instead of using old,
+                fragile design rules where a developer has to guess exact phone
+                or monitor sizes, this system allows the entire website layout
+                to smoothly stretch or shrink to fit the exact screen of any
+                device automatically. This completely eliminates common template
+                glitches, text overlapping, and broken columns when a customer
+                rotates their smartphone or switches from an office tablet to a
+                wide desktop monitor.
+              </p>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="lab-selection" class="container">
+        <div class="editorial-split-row reverse-row">
+          <div class="work-title-panel">
+            <span class="work-large-num" aria-hidden="true">02</span>
+            <h2 class="work-section-heading">
+              CUSTOM<span class="block-span serif-italic">selection.</span>
+            </h2>
+            <p class="title-menu-desc">
+              Overrides the browser's default highlighting behaviors to enforce
+              strict brand cohesion across all tactile user interactions.
+            </p>
+          </div>
+
+          <div class="work-playground-panel">
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3>// PSEUDO-ELEMENT COHESION</h3>
+              </div>
+              <p class="body-large">
+                Standard blue text highlighting breaks interface immersion. This
+                card uses specific pseudo-element targeting to bind text
+                selections directly to the primary system accent layer.
+              </p>
+              <div class="live-test-display selection-zone">
+                <p class="body-large margin-zero">
+                  [ HIGHLIGHT THIS TEXT BLOCK TO TEST THE SYSTEM ACCENT
+                  HIGHLIGHT ]
+                </p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="lab-shake" class="container">
+        <div class="editorial-split-row">
+          <div class="work-title-panel">
+            <span class="work-large-num" aria-hidden="true">03</span>
+            <h2 class="work-section-heading">
+              ERROR<span class="block-span serif-italic">physics.</span>
+            </h2>
+            <p class="title-menu-desc">
+              Translates static validation states into aggressive kinetic
+              feedback to command immediate user attention when systems fail.
+            </p>
+          </div>
+
+          <div class="work-playground-panel">
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3>// LATERAL FEEDBACK LOOPS</h3>
+              </div>
+              <p class="body-large bottom-2-5rem">
+                Static error readouts are easy to miss. This component triggers
+                an active, lateral shake animation response and updates mouse
+                tracking states to signal invalid form actions instantly.
+              </p>
+              <button
+                id="live-shake-btn"
+                class="interactive-button-action btn-block">
+                TRIGGER ACTIVE ERROR SHAKE &rarr;
+              </button>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="lab-elevation" class="container">
+        <div class="editorial-split-row reverse-row">
+          <div class="work-title-panel">
+            <span class="work-large-num" aria-hidden="true">04</span>
+            <h2 class="work-section-heading">
+              HOVER<span class="block-span serif-italic">elevation.</span>
+            </h2>
+            <p class="title-menu-desc">
+              Emulates an interactive Z-axis, lifting flat components into the
+              foreground to establish clickable priority and tactile depth.
+            </p>
+          </div>
+
+          <div class="work-playground-panel">
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3>// DEPTH MATRIX EMULATION</h3>
+              </div>
+              <p class="body-large bottom-2-5rem">
+                Flat design frameworks risk looking lifeless. To establish
+                physical context, specific components trigger a smooth offset
+                transformation and cast severe drop shadows on hover.
+              </p>
+              <div class="live-test-display lab-hover-card">
+                <h4>[ HOVER OVER THIS CORE NODE TO ELEVATE ]</h4>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="lab-print" class="container">
+        <div class="editorial-split-row">
+          <div class="work-title-panel">
+            <span class="work-large-num" aria-hidden="true">05</span>
+            <h2 class="work-section-heading">
+              PRINT<span class="block-span serif-italic">stylesheets.</span>
+            </h2>
+            <p class="title-menu-desc">
+              Strips the digital interface entirely, delivering a clean,
+              uncompressed monochrome layout optimized strictly for physical
+              paper.
+            </p>
+          </div>
+
+          <div class="work-playground-panel">
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3>// OFFLINE DOCUMENT REDIRECTS</h3>
+              </div>
+              <p class="body-large bottom-2-5rem">
+                True software optimization accounts for offline utilization.
+                This engine runs a custom document print layout that scrubs out
+                screen interfaces and reveals uncompressed raw paths.
+              </p>
+              <button
+                id="live-print-btn"
+                class="interactive-button-action btn-block"
+                onclick="window.print()">
+                LAUNCH PRINTER STYLESHEET PROFILE &rarr;
+              </button>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="lab-logic" class="container">
+        <div class="editorial-split-row reverse-row">
+          <div class="work-title-panel">
+            <span class="work-large-num" aria-hidden="true">06</span>
+            <h2 class="work-section-heading">
+              FUNCTIONAL<span class="block-span serif-italic">arrays.</span>
+            </h2>
+            <p class="title-menu-desc">
+              Bypasses rigid conditionals by filtering inputs through dynamic
+              JavaScript logic modules to output clean, evaluated data.
+            </p>
+          </div>
+
+          <div class="work-playground-panel">
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3>// CONDITIONAL DECLUTTERING</h3>
+              </div>
+              <p class="body-large bottom-2-5rem">
+                Replacing fragile, hardcoded conditionals with flexible system
+                arrays. This internal logic module evaluates inputs cleanly
+                through standard computational methods.
+              </p>
+              <div class="live-test-display text-left">
+                <form id="live-logic-form" class="lab-logic-form">
+                  <p class="lab-logic-title margin-zero mb-1">
+                    Is HTML a programming language?
+                  </p>
+                  <label class="lab-logic-label"
+                    ><input type="radio" name="q1" value="yes" /> Yes</label
+                  >
+                  <label class="lab-logic-label"
+                    ><input type="radio" name="q1" value="no" /> No</label
+                  >
+                  <button
+                    type="button"
+                    id="live-logic-btn"
+                    class="interactive-button-action lab-logic-btn top-1rem">
+                    EXECUTE INPUT PARSER
+                  </button>
+                </form>
+                <p id="live-logic-result" class="lab-logic-result top-2rem">
+                  [ ENGINE STATUS // ONLINE ]
+                </p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="lab-fluid" class="container">
+        <div class="editorial-split-row">
+          <div class="work-title-panel">
+            <span class="work-large-num" aria-hidden="true">07</span>
+            <h2 class="work-section-heading">
+              FLUID<span class="block-span serif-italic">scaling.</span>
+            </h2>
+            <p class="title-menu-desc">
+              Utilizes native CSS clamp() equations to dynamically resize
+              typography based on viewport geometry, replacing fragile
+              breakpoints.
+            </p>
+          </div>
+
+          <div class="work-playground-panel">
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3>// CLAMP() MATHEMATICAL EQUATIONS</h3>
+              </div>
+              <p class="body-large bottom-2-5rem">
+                Text blocks shouldn't rely on sudden viewport jumps. This window
+                uses structural bounding rules to resize font profiles cleanly
+                across varying system sizes.
+              </p>
+              <div class="border-box lab-fluid-box">
+                <p class="lab-fluid-text margin-zero no-wrap">
+                  // FLUID_ENGINE_TEXT
+                </p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="lab-focus" class="container">
+        <div class="editorial-split-row reverse-row">
+          <div class="work-title-panel">
+            <span class="work-large-num" aria-hidden="true">08</span>
+            <h2 class="work-section-heading">
+              FOCUS<span class="block-span serif-italic">indicators.</span>
+            </h2>
+            <p class="title-menu-desc">
+              Protects non-mouse accessibility, mapping high-contrast visual
+              rings specifically for keyboard tab sequences and semantic focus.
+            </p>
+          </div>
+
+          <div class="work-playground-panel">
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3>// INCLUSIVE PROGRAMMING PATHS</h3>
+              </div>
+              <p class="body-large bottom-2-5rem">
+                Inclusive programming protects non-mouse interactions. This
+                environment maps distinctive focus indicators that trigger
+                explicitly during active keyboard tab sequences.
+              </p>
+              <div class="flex-stack">
+                <input
+                  type="text"
+                  placeholder="CLICK FIELD THEN PRESS TAB KEY"
+                  class="sandbox-input-field" />
+                <button class="interactive-button-action btn-block">
+                  SYSTEM VALVE ACCESS
+                </button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="architecture-grid" class="container">
+        <div class="editorial-split-row">
+          <div class="work-title-panel">
+            <span class="work-large-num" aria-hidden="true">09</span>
+            <h2 class="work-section-heading">
+              BACKGROUND<span class="block-span serif-italic">systems.</span>
+            </h2>
+            <p class="title-menu-desc">
+              Invisible operational mechanics. Engineered to eliminate FOUC,
+              handle real-time data filters, and offload heavy scroll observers
+              seamlessly.
+            </p>
+          </div>
+
+          <div class="work-playground-panel">
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3>// FOUC-FREE THEME EVALUATION</h3>
+              </div>
+              <p class="body-large">
+                Dark mode preferences are evaluated instantly via critical
+                scripts injected right into the document head, completely
+                blocking any bright screen flashes before visual stylesheets
+                load.
+              </p>
+            </section>
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3>// LIVE SEARCH FILTERS</h3>
+              </div>
+              <p class="body-large">
+                Internal search systems process text fields instantly without
+                triggering full page reloads, using decoupling functions to scan
+                master arrays on every single keystroke.
+              </p>
+            </section>
+            <section class="interactive-sandbox-card">
+              <div class="sandbox-headline-track">
+                <h3>// PROGRESSIVE OBSERVERS</h3>
+              </div>
+              <p class="body-large">
+                Reading depth indicators monitor page progress fluidly without
+                causing interface lag, offloading rendering calculations safely
+                onto browser animation loops.
+              </p>
+            </section>
+          </div>
+        </div>
+
+        <section
+          class="interactive-sandbox-card span-track-2 lab-fullscreen-preview">
+          <canvas id="fluid-lab-canvas"></canvas>
+
+          <div id="vram-lab-content" class="vram-lab-interactive-overlay">
+            <div class="sandbox-headline-track vram-headline-override">
+              <h3>// VRAM FLUID EMULATION</h3>
+            </div>
+            <p class="body-large vram-desc">
+              Native HTML5 hardware acceleration. Move your cursor to manipulate
+              the liquid matrix in real-time.
+            </p>
+
+            <a
+              href="liquid-sim.html"
+              class="badge badge-inverse no-underline top-2rem btn-vram-lab">
+              ENTER FULLSCREEN LAB &rarr;
+            </a>
+          </div>
+        </section>
+      </section>
+
+      <section class="cta-banner">
+        <a
+          href="contact.html"
+          class="cta-link border-top"
+          aria-label="Navigate to contact page to start a project">
+          <div class="container overflow-hidden">
+            <h2 class="cta-massive-text">
+              LET'S ENGINEER
+              <span class="serif-italic">something</span>&nbsp;&rarr;
+            </h2>
+          </div>
+        </a>
+      </section>
+    </main>
+
+    <footer class="swiss-footer">
+      <div class="swiss-row-top swiss-border-bottom">
+        <h2 class="swiss-massive-type">CRUZ PLAMONDON</h2>
+      </div>
+
+      <div class="swiss-row-mid swiss-border-bottom">
+        <a href="index.html" class="swiss-col-4 swiss-border-right">
+          <div class="swiss-col-header">
+            <span>[ 01 ] HOMEPAGE</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2l2.4 6.6 6.6 2.4-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Return to the main system terminal and dashboard overview.
+          </p>
+        </a>
+
+        <a href="work.html" class="swiss-col-4 swiss-border-right">
+          <div class="swiss-col-header">
+            <span>[ 02 ] FEATURED WORK</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="8" cy="12" r="7" />
+              <circle cx="16" cy="12" r="7" opacity="0.6" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Explore live architectural capabilities and interactive case
+            studies.
+          </p>
+        </a>
+
+        <a href="philosophy.html" class="swiss-col-4 swiss-border-right">
+          <div class="swiss-col-header">
+            <span>[ 03 ] PHILOSOPHY</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <rect x="2" y="4" width="6" height="6" />
+              <rect x="9" y="4" width="6" height="6" />
+              <rect x="16" y="4" width="6" height="6" />
+              <rect x="2" y="11" width="6" height="6" />
+              <rect x="9" y="11" width="6" height="6" />
+              <rect x="16" y="11" width="6" height="6" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Read the foundational developer tenets, design logic, and rules.
+          </p>
+        </a>
+
+        <a href="contact.html" class="swiss-col-4">
+          <div class="swiss-col-header">
+            <span>[ 04 ] CONTACT</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <rect x="3" y="5" width="18" height="3" />
+              <rect x="3" y="10" width="12" height="3" />
+              <rect x="3" y="15" width="18" height="3" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Initialize direct transmission and view operator specifications.
+          </p>
+        </a>
+      </div>
+
+      <div class="swiss-row-bottom">
+        <div class="swiss-col-half swiss-border-right">
+          <h4 class="swiss-subheading">CURRENT RIG SPECS</h4>
+          <p class="swiss-text-body">
+            Located in Winnipeg, Manitoba (Central Timezone).<br />
+            Operating within the PTEC Web Development ecosystem.<br />
+            Hardware: ASUS TUF Framework // Focus: Brutalist Aesthetics.<br />
+            Currently accepting inquiries for structural web deployments.
+          </p>
+
+          <div class="top-2rem">
+            <a
+              href="https://github.com/cruz-in"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="swiss-social-anchor">
+              &#128279; SOURCE CODES // GITHUB PROFILE &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div class="swiss-col-half flex-bottom-right">
+          <div class="swiss-status-top">
+            <span class="swiss-subheading">SYSTEM STATUS</span>
+            <span class="swiss-text-body text-right">2026 // ONLINE</span>
+          </div>
+          <h2 class="swiss-status-massive">OPTIMAL</h2>
+        </div>
+      </div>
+
+      <div class="swiss-row-copyright">
+        <p class="swiss-copyright-text">
+          &copy; 2026 Cruz Plamondon &mdash; PTEC Web Development. All Rights
+          Reserved.
+        </p>
+      </div>
+    </footer>
+
+    <a href="#" class="back-to-top" aria-label="Back to top">&#8593;</a>
+
+    <script src="JavaScripts/searchData.js"></script>
+    <script src="JavaScripts/scripts.js"></script>
+  </body>
+</html>

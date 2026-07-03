@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cruz Plamondon | Portfolio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Playfair+Display:ital@1&display=swap"
+      rel="stylesheet" />
+
+    <link rel="stylesheet" href="stylesheets/main.css" />
+
+    <style>
+      /* =====================================================================
+         GRADE 9 EXPLANATION: INDEX.HTML INTERNAL STYLES & HIERARCHY
+         We put these here so they only affect the homepage. 
+         We've massively increased the H1, created huge contrast between 
+         H2, H3, and H4, and made the text boxes solid so the text is 100% readable!
+      ===================================================================== */
+
+      /* 1. MASSIVE HERO H1 OVERRIDE */
+      .hero-title-index {
+        /* Pushed from 25rem to 30rem max. It is now absolutely massive. */
+        font-size: clamp(15rem, 18vw, 30rem) !important;
+        line-height: 0.8;
+        letter-spacing: -4px;
+      }
+
+      /* 2. EXTREME HEADING CONTRAST HIERARCHY */
+      .section-title {
+        font-size: clamp(6rem, 8vw, 11rem) !important; /* Huge H2 */
+        letter-spacing: -2px;
+      }
+
+      .card-header h3 {
+        font-size: clamp(3rem, 4.5vw, 5.5rem) !important; /* Medium H3 */
+        margin: 0;
+      }
+
+      /* 3. FIX: TRANSPARENT BOXES BLEEDING TEXT */
+      /* Forces the text boxes in the featured work section to have a solid background */
+      .grid-split .padding-box {
+        background-color: var(
+          --bg-primary
+        ) !important; /* Solid opaque background */
+        border: var(--border-thick) !important;
+        box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.1) !important; /* Adds depth so it pops off the background */
+        z-index: 5;
+        position: relative;
+      }
+      html.dark-mode .grid-split .padding-box {
+        background-color: var(
+          --bg-inverse
+        ) !important; /* Solid dark background */
+        box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.5) !important;
+      }
+
+      /* 4. FEATURED SHOWCASE STACK ARCHITECTURE */
+      /* Handles the vertical compression, custom scanlines, and unblurred brutalist depth. */
+      .project-image-stack {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-self: space-between;
+      }
+
+      .project-image-frame {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        min-height: auto;
+        background-color: var(--bg-inverse);
+        display: block;
+        position: relative;
+        overflow: hidden;
+        border: var(--border-thick);
+        transition:
+          transform var(--speed-fast) var(--curve-brutal),
+          box-shadow var(--speed-fast) var(--curve-brutal);
+      }
+
+      /* Structural CRT Scanline Overlay applied to each stacked viewport element */
+      .project-image-frame::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0) 50%,
+          rgba(0, 0, 0, 0.12) 50%,
+          rgba(0, 0, 0, 0.12)
+        );
+        background-size: 100% 4px;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .project-img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        display: block;
+        object-fit: cover;
+        filter: grayscale(100%) contrast(125%);
+        position: relative;
+        z-index: 1;
+      }
+
+      /* TACTICAL HOVER DELAY PURGE */
+      .project-image-frame:hover {
+        transition: linear 0.3s;
+        transform: translate3d(-6px, -6px, 0) !important;
+        box-shadow: 6px 6px 0px 0px var(--accent-color) !important;
+        transition-delay: 0s !important; /* Intercepts the scroll animation delay leak */
+      }
+
+      /* 5. MISSING TYPOGRAPHY HOOKS (previously unstyled) */
+      .status-label {
+        font-family: "Inter", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin: 0;
+      }
+
+      .project-intro {
+        font-size: 1.8rem;
+        line-height: 1.5;
+        opacity: 0.95;
+      }
+
+      .academy-title {
+        font-family: "Bebas Neue", serif;
+        font-size: 3rem;
+        letter-spacing: 0.5px;
+        margin-bottom: 1rem;
+      }
+
+      .roadmap-heading {
+        font-family: "Bebas Neue", serif;
+        font-size: 3.5rem;
+        letter-spacing: 0.5px;
+        margin: 1rem 0;
+      }
+
+      .roadmap-text {
+        font-size: 1.8rem;
+        line-height: 1.6;
+        opacity: 0.9;
+      }
+
+      .roadmap-quote {
+        font-family: "Playfair Display", Georgia, serif;
+        font-style: italic;
+        font-size: 2.2rem;
+        line-height: 1.4;
+        margin: 0;
+      }
+    </style>
+
+    <script>
+      if (localStorage.getItem("system-theme") === "dark") {
+        document.documentElement.classList.add("dark-mode");
+      }
+    </script>
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-link">Skip to Content</a>
+
+    <div id="intro-screen" class="intro-screen" aria-hidden="true">
+      <div class="intro-code-wrapper">
+        <div class="intro-code-rain">
+          <span>
+            > const DOM = new SystemRenderer();<span class="line-break"></span>
+            > sys.init({ strict: true, sync: false });<span
+              class="line-break"></span>
+            > memory.heap.allocate(1024);<span class="line-break"></span> >
+            function bypassLatency() { return true; }<span
+              class="line-break"></span>
+            > observer.watch(matrix);<span class="line-break"></span> >
+            load.execute();<span class="line-break"></span> > status: VRAM
+            OPTIMIZED.<span class="line-break"></span>
+          </span>
+          <span>
+            > const DOM = new SystemRenderer();<span class="line-break"></span>
+            > sys.init({ strict: true, sync: false });<span
+              class="line-break"></span>
+            > memory.heap.allocate(1024);<span class="line-break"></span> >
+            function bypassLatency() { return true; }<span
+              class="line-break"></span>
+            > observer.watch(matrix);<span class="line-break"></span> >
+            load.execute();<span class="line-break"></span> > status: VRAM
+            OPTIMIZED.<span class="line-break"></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="intro-logo">CRUZ<span class="accent-dot">.</span></div>
+    </div>
+
+    <div id="progress-bar"></div>
+
+    <!-- START: DUAL-CLUSTER GLASS PILL NAVIGATION -->
+    <nav class="nav-glass-pill" id="main-nav-pill" aria-label="Main Navigation">
+      <div class="nav-pill-list" id="nav-pill-list">
+        <div class="nav-lens" id="nav-lens" aria-hidden="true"></div>
+
+        <!-- PRIMARY NAVIGATION CLUSTER -->
+        <ul class="nav-cluster primary-cluster">
+          <li class="nav-item is-active">
+            <a href="index.html" class="nav-icon" aria-label="Homepage">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              </svg>
+            </a>
+            <span class="nav-label">HOME</span>
+          </li>
+
+          <li class="nav-item">
+            <a href="work.html" class="nav-icon" aria-label="Featured Work">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </a>
+            <span class="nav-label">WORK</span>
+            <div class="glass-flyout edge-align-left">
+              <span class="flyout-title">FEATURED WORK</span>
+              <a href="index.html#featured-work">Treaty 1 Architecture</a>
+              <a href="index.html#about">Capabilities Matrix</a>
+              <a href="work.html">Interactive Laboratory</a>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a
+              href="philosophy.html"
+              class="nav-icon"
+              aria-label="Developer Philosophy">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path
+                  d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </a>
+            <span class="nav-label">PHIL</span>
+            <div class="glass-flyout">
+              <span class="flyout-title">PHILOSOPHY</span>
+              <a href="philosophy.html#tenets">The War on Load</a>
+              <a href="philosophy.html#tenets">First Eye Psychology</a>
+              <a href="philosophy.html#tenets">Chameleon Aesthetic</a>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a
+              href="contact.html"
+              class="nav-icon"
+              aria-label="Contact Operator">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </a>
+            <span class="nav-label">EMAIL</span>
+            <div class="glass-flyout">
+              <span class="flyout-title">EMAIL & CONTACT</span>
+              <a href="contact.html">Direct message</a>
+              <a href="contact.html#personal-specs">Operator profile</a>
+              <a href="https://github.com/cruz-in" target="_blank"
+                >GitHub Repository</a
+              >
+            </div>
+          </li>
+        </ul>
+
+        <!-- SYSTEM CONTROLS CLUSTER -->
+        <ul class="nav-cluster system-cluster">
+          <li class="nav-item">
+            <button class="nav-icon" aria-label="System Settings">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </button>
+            <div class="glass-flyout edge-align-right">
+              <span class="flyout-title">SYSTEM SETTINGS</span>
+
+              <button
+                class="composite-search-btn interactive-button-action"
+                aria-label="Open Search">
+                <div class="search-glass-puck">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </div>
+                <div class="search-solid-pill">SEARCH PLATFORM</div>
+              </button>
+
+              <div class="glass-toggle-wrapper margin-top-1">
+                <input
+                  type="checkbox"
+                  id="theme-switch"
+                  class="theme-switch-input"
+                  aria-label="Toggle Dark Mode" />
+                <label for="theme-switch" class="glass-toggle-label">
+                  <span class="glass-toggle-knob">
+                    <svg
+                      class="toggle-sun"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg
+                      class="toggle-moon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <path
+                        d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                  </span>
+                </label>
+                <span class="toggle-label-text">DARK MODE</span>
+              </div>
+
+              <div class="glass-toggle-wrapper margin-top-1">
+                <input
+                  type="checkbox"
+                  id="audio-switch"
+                  class="audio-switch-input theme-switch-input"
+                  aria-label="Toggle System Audio Mute" />
+                <label for="audio-switch" class="glass-toggle-label">
+                  <span class="glass-toggle-knob">
+                    <svg
+                      class="toggle-audio-on"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <path
+                        d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <svg
+                      class="toggle-audio-off"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <line x1="23" y1="9" x2="17" y2="15"></line>
+                      <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                  </span>
+                </label>
+                <span class="toggle-label-text">MUTE AUDIO</span>
+              </div>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <button
+              id="stealth-toggle-btn"
+              class="nav-icon"
+              aria-label="Hide UI">
+              <svg
+                class="icon-eye-off"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+              <svg
+                class="icon-eye"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                style="display: none">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="drawer-overlay" aria-hidden="true"></div>
+    <section class="drawer-panel" aria-hidden="true">
+      <div class="drawer-header">
+        <form class="drawer-form">
+          <label for="drawer-search-input" class="sr-only">Search</label>
+          <input
+            type="text"
+            id="drawer-search-input"
+            placeholder="SEARCH PORTFOLIO..."
+            autocomplete="off"
+            disabled />
+        </form>
+      </div>
+      <section class="drawer-content">
+        <h4>QUICK LINKS</h4>
+        <ul class="drawer-results"></ul>
+      </section>
+    </section>
+
+    <main id="main-content">
+      <section class="hero-section border-bottom">
+        <div class="hero-left">
+          <section>
+            <h1 class="hero-display margin-zero hero-title-index">
+              cruz<span class="accent-dot">.</span>
+            </h1>
+            <p class="hero-subtitle">
+              DIGITAL STRATEGY + FRONT-END ENGINEERING
+            </p>
+          </section>
+          <div class="scroll-wrapper">
+            <a
+              href="#featured-work"
+              class="btn-scroll"
+              aria-label="Scroll down to Featured Work section"
+              >&darr;</a
+            >
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <canvas id="fluid-hero" class="color-block-accent"></canvas>
+          <img
+            src="images/landing-image.png"
+            alt="Cruz Plamondon Portrait"
+            class="hero-image"
+            onerror="this.style.display = 'none'" />
+          <div class="text-vertical-badge">
+            FRONT-END ENGINEER &bull; WINNIPEG, MANITOBA
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="marquee-container border-bottom card-dark"
+        aria-hidden="true">
+        <div class="marquee-content">
+          <span
+            >CUSTOM CODE ASSISTED BY AI &bull; RESPONSIVE GRID LAYOUTS &bull;
+            TOTAL ACCESSIBILITY COMPLIANCE &bull; DYNAMIC TEXT SCALING &bull;
+            LIVE INTERACTION ENGINES &bull;&nbsp;</span
+          >
+          <span aria-hidden="true"
+            >CUSTOM CODE ASSISTED BY AI &bull; RESPONSIVE GRID LAYOUTS &bull;
+            TOTAL ACCESSIBILITY COMPLIANCE &bull; DYNAMIC TEXT SCALING &bull;
+            LIVE INTERACTION ENGINES &bull;&nbsp;</span
+          >
+        </div>
+      </section>
+
+      <section
+        id="featured-work"
+        class="container border-bottom section-padding">
+        <h2 class="section-title">
+          Featured Work Showcase <span class="accent-dot">//</span> Treaty 1
+          Digital Platform
+        </h2>
+        <div class="top-margin">
+          <div class="border-box">
+            <section
+              class="card-header border-bottom padding-box card-dark flex-row-justify">
+              <h3>TREATY 1 DIGITAL EDUCATION PLATFORM</h3>
+              <span class="badge badge-light">A</span>
+            </section>
+
+            <div class="grid-split">
+              <section class="padding-box">
+                <p class="project-intro">
+                  An interactive, fully responsive digital platform built to
+                  preserve and document the history, agreements, and modern
+                  updates of Manitoba’s first Numbered Treaty. This system
+                  serves as a live commercial example of how I organize complex
+                  information, maintain clean layouts, and deliver high-speed
+                  performance under heavy content loads.
+                </p>
+                <h4 class="project-features-title top-margin">
+                  Core Features & Business Protections:
+                </h4>
+                <ul class="list-brutalist top-margin">
+                  <li class="list-brutalist">
+                    <strong
+                      >Smooth Day/Night Vision System (FOUC-Free Dark Mode
+                      Engine):</strong
+                    >Engineered a seamless color theme switch that saves your
+                    customer's viewing preferences directly inside their
+                    browser. By checking their system settings instantly before
+                    drawing the page, it completely prevents bright, shocking
+                    flashes of white light from blinding your visitors when they
+                    load your website at night.
+                  </li>
+                  <li class="list-brutalist">
+                    <strong
+                      >Instant Search Bar (Live-Typing Search Drawer):
+                    </strong>
+                    A smooth, hidden search panel that runs on a custom data
+                    list. Your clients can type any keyword and see matching
+                    pages instantly on their screen without ever waiting for the
+                    web browser to refresh or reload.
+                  </li>
+                  <li class="list-brutalist">
+                    <strong
+                      >Smooth Visual Entry Tracking (Advanced Scroll Physics):
+                    </strong>
+                    Implemented a lightweight monitoring system that tracks how
+                    far a user has scrolled down the screen. It triggers
+                    polished, professional entry animations exactly as items
+                    enter the viewport, keeping the website layout feeling
+                    responsive, modern, and engaging.
+                  </li>
+                  <li class="list-brutalist">
+                    <strong
+                      >Dynamic Screen-Matching Layouts (Modern Responsive
+                      Architecture):
+                    </strong>
+                    Designed flexible layout boxes using advanced mathematical
+                    formulas instead of rigid, fixed grid lines. This ensures
+                    that your text, images, and content blocks scale smoothly on
+                    a perfect curve to fit any device size seamlessly, from the
+                    smallest phone to the largest office screen.
+                  </li>
+                  <li class="list-brutalist">
+                    <strong
+                      >Full Digital Accessibility Compliance (Strict Web
+                      Accessibility / WCAG):
+                    </strong>
+                    Prioritized inclusive design by including clear visual
+                    highlights for keyboard navigation, clear landmark tags for
+                    screen readers, hidden skip-to-content shortcuts, and strict
+                    color choices. This ensures your business is fully
+                    accessible to all individuals and protected against modern
+                    digital legal risks.
+                    <span class="line-break"></span>
+                    <i>
+                      (Nobody likes this part but it's the most important and
+                      only I have to deal with it)
+                    </i>
+                  </li>
+                </ul>
+
+                <div class="top-2rem">
+                  <a
+                    href="https://cruz-in.github.io/treaty-one-project/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="badge badge-accent no-underline">
+                    LAUNCH TREATY 1 PLATFORM &rarr;
+                  </a>
+                </div>
+              </section>
+
+              <div class="project-image-stack">
+                <div class="project-image-frame">
+                  <img
+                    src="images/preview-card-homepage.png"
+                    alt="Treaty 1 Project Preview - Digital Education Dashboard View"
+                    class="project-img"
+                    onerror="this.style.display = 'none'"
+                    loading="lazy" />
+                </div>
+
+                <div class="project-image-frame">
+                  <img
+                    src="images/preview-card-history.png"
+                    alt="Treaty 1 Project Preview - The Negotiations of 1871 Module View"
+                    class="project-img"
+                    onerror="this.style.display = 'none'"
+                    loading="lazy" />
+                </div>
+
+                <div class="project-image-frame bottom-2-5rem">
+                  <img
+                    src="images/preview-card-modern.png"
+                    alt="Treaty 1 Project Preview - Modern Implementation and Urban Reserves View"
+                    class="project-img"
+                    onerror="this.style.display = 'none'"
+                    loading="lazy" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="container border-bottom section-padding">
+        <h2 class="section-title">
+          Capabilities Matrix <span class="accent-dot">//</span> Real Business
+          Value
+        </h2>
+
+        <section class="project-intro top-margin margin-bottom">
+          <p>
+            Online visitors do not read every single line of text on a
+            screen—they skim quickly to see if a business is.<span
+              class="line-break"></span>
+            This section is engineered to show you exactly how my coding
+            standards protect your profits, your brand<span
+              class="line-break"></span>
+            identity, and your customer relationships.
+          </p>
+        </section>
+        <div class="grid-numbered top-margin">
+          <section class="number-card card">
+            <div class="circle-num" aria-hidden="true">1</div>
+            <h4 class="project-features-title">Clean Layout Structure</h4>
+            <p class="capability-text">
+              I write highly organized code from scratch assisted by
+              <abbr title="Artificial Intelligence">AI</abbr> without relying on
+              heavy templates or messy shortcuts. By utilizing clear,
+              descriptive structural labels for every piece of content, web
+              search engines like Google can crawl, index, and rank your
+              business website much more effectively, driving organic traffic
+              directly to your brand
+            </p>
+          </section>
+          <section class="number-card card">
+            <div class="circle-num" aria-hidden="true">2</div>
+            <h4 class="project-features-title">Flawless Scaling</h4>
+            <p class="capability-text">
+              Your buyers view your brand on desktop screens, office tablets,
+              and small mobile phones. I completely reject fragile, old-school
+              layout rules that break when rotated. Instead, I use custom math
+              equations built right into the design style so every image, text
+              block, and button grows or shrinks smoothly to fit any screen
+              perfectly.
+            </p>
+          </section>
+          <section class="number-card card">
+            <div class="circle-num" aria-hidden="true">3</div>
+            <h4 class="project-features-title">Defensible UX</h4>
+            <p class="capability-text">
+              A great website must do more than just look pretty—it needs to
+              guide your customer to a sale. Every button size, text layout, and
+              contact form path is chosen with strict intent. I use
+              high-contrast color choices that eliminate eye strain and place
+              interactive elements exactly where human eyes look naturally,
+              reducing confusion and increasing your conversion rates.
+            </p>
+          </section>
+        </div>
+      </section>
+
+      <section
+        id="about"
+        class="container border-bottom section-padding grid-bento">
+        <section class="card card-dark flex-column-justify">
+          <h2 class="section-title">
+            Professional Overview <span class="accent-dot">//</span> About Me
+          </h2>
+          <p class="body-large">
+            Since September 2025, I have been building websites by making
+            deliberate, clear choices that put your customers first. I do not
+            just decorate web pages—I engineer them from the ground up. For me,
+            true quality lives in the fine details of the code. I study
+            international web layout guidelines closely, treating accessibility
+            as a foundational requirement rather than an afterthought. I focus
+            deeply on clear text structures, perfect code spacing, and
+            high-contrast styling so that no potential customer is left behind
+            or locked out of your website. I look into the fine print of these
+            tech standards because it pushes me to create bold, clean design
+            layouts that are striking to look at while remaining stable, highly
+            efficient, and perfectly safe for long-term commercial use.
+          </p>
+          <span class="text-giant-num" aria-hidden="true">1</span>
+        </section>
+
+        <div class="card padding-box flex-column-justify">
+          <section class="terminal-engine">
+            <h3 class="terminal-title">[ CORE TERMINAL ENGINE ]</h3>
+            <div class="terminal-screen">
+              <span class="block-span"
+                >&gt; [ ENVIRONMENT: ACTIVE LAB ] &bull; STATUS: AVAILABLE FOR
+                ARCHITECTURE</span
+              >
+              <span class="block-span"
+                >&gt; LOCAL_TIME:
+                <strong id="terminal-clock-static">00:00:00 AM</strong></span
+              >
+            </div>
+
+            <div class="terminal-status-row">
+              <div class="pulse-indicator"></div>
+              <p class="status-label">STATUS: AVAILABLE FOR ARCHITECTURE</p>
+            </div>
+          </section>
+
+          <div class="gallery-split-grid">
+            <img
+              src="images/about-me.jpg"
+              alt="Cruz Plamondon Profile"
+              onerror="this.style.display = 'none'"
+              loading="lazy" />
+            <img
+              src="images/winnipeg.jpg"
+              alt="Winnipeg Landscape"
+              onerror="this.style.display = 'none'"
+              loading="lazy" />
+          </div>
+        </div>
+      </section>
+
+      <section class="container border-bottom section-padding">
+        <h2 class="section-title">Training & Educational Roots</h2>
+        <div class="grid-split top-margin border-box">
+          <section class="padding-box card-dark">
+            <h3 class="academy-title">The Academic Engine:</h3>
+            <p class="body-large top-1rem">
+              Enrolled as a Grade 9 student in the specialized PTEC program
+              (Pembina Trails Early College). My training completely bypasses
+              basic, generic web design drag-and-drop builders. Instead, I study
+              the actual mechanics of software production, treating the web
+              browser as a professional engineering platform.
+            </p>
+          </section>
+
+          <div class="padding-box layout-stack">
+            <section class="academy-node">
+              <span class="badge badge-inverse">SEPTEMBER 2025 - PRESENT</span>
+              <h4 class="academy-subheading">What I am Doing Now:</h4>
+              <p class="academy-body">
+                Breaking down box models, container layout laws, system font
+                rules, and custom styling mechanics to build highly stable
+                websites that never break across different device screen sizes
+              </p>
+            </section>
+            <section class="academy-node border-top-thin">
+              <span class="badge badge-inverse">What is Coming Next:</span>
+              <h4 class="academy-subheading">PROGRAMMING STANDARDS</h4>
+              <p class="academy-body">
+                Expanding layout logic using advanced data handling methods,
+                clean user input sorting, loading external data smoothly, and
+                tracking technical issues directly through advanced testing
+                tools
+              </p>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="container section-padding">
+        <h2 class="section-title">
+          The Production Roadmap <span class="accent-dot">//</span> 2026 Focus
+        </h2>
+        <div class="grid-split top-margin border-box">
+          <section class="padding-box">
+            <span class="badge badge-accent">ACTIVE HORIZON [ 2026 ]</span>
+            <h3 class="roadmap-heading">REFINING THE INTERNET LAYER</h3>
+            <p class="roadmap-text">
+              I am actively strengthening my core website engines by building
+              faster animations without adding heavy, bloated files that slow
+              down your load times. My current schedule focuses on cutting out
+              technical slowdowns, creating clean code blocks that can be reused
+              across your site, lowering code weight, and running strict
+              automated tests to guarantee zero errors before a website ever
+              goes live.
+            </p>
+          </section>
+          <section class="padding-box card-dark flex-column-justify">
+            <blockquote class="roadmap-quote">
+              "THE ARCHITECTURE HOLDS WHEN THE CODE REMOVED WEIGHS MORE THAN THE
+              CODE ADDED."
+            </blockquote>
+          </section>
+        </div>
+      </section>
+
+      <section
+        id="system-intelligence"
+        class="container section-padding border-top">
+        <h2 class="section-title margin-bottom-lg">
+          Deep Dive Analysis <span class="accent-dot">//</span> Design vs. Logic
+        </h2>
+
+        <div class="editorial-blurb-grid">
+          <section class="blurb-track-node">
+            <div class="blurb-image-frame">
+              <img
+                src="images/monochrome-architechure.jpg"
+                class="blurb-media"
+                alt="Monochrome architectural silhouette representing digital design style"
+                loading="lazy" />
+            </div>
+            <section class="blurb-content-frame">
+              <span class="track-meta-num"
+                >Log 01 <span class="accent-dot">//</span> From Fashion to Code
+                Alignment</span
+              >
+              <h3 class="track-accent-head">TACTICAL <em>aesthetics.</em></h3>
+              <p class="body-large">
+                Before I ever wrote a single line of website code, I spent my
+                time studying clothing composition, structural outlines, and
+                garment shapes. This portfolio is not built by a cold machine;
+                it is guided by a natural eye for visual balance, clean grid
+                lines, and perfect spatial proportions. A great design layout
+                uses the same foundational rules whether you are layering
+                premium fabrics or arranging rigid rows of website text. This
+                page represents clean web development focused on sharp, timeless
+                style and strict code quality.
+              </p>
+              <a
+                href="philosophy.html"
+                class="badge badge-inverse top-3rem no-underline">
+                DECRYPT THE MANIFESTO &rarr;
+              </a>
+            </section>
+          </section>
+          <section class="blurb-track-node reverse-track">
+            <div class="blurb-image-frame">
+              <img
+                src="images/brutalism-poster.jpg"
+                class="blurb-media"
+                alt="Abstract high-contrast structural grid line matching strict engineering layout rules"
+                loading="lazy" />
+            </div>
+            <section class="blurb-content-frame">
+              <span class="track-meta-num"
+                >Log 02 <span class="accent-dot">//</span> Absolute System
+                Speed</span
+              >
+              <h3 class="track-accent-head">THE MACHINE <em>laws.</em></h3>
+              <p class="body-large">
+                I focus deeply on micro-adjustments, layout accuracy, and fast
+                runtime efficiency. This website architecture treats code not as
+                a messy sketchpad, but as a fine-tuned machine that must be
+                optimized for speed. Driven by a desire to make websites easy to
+                use and completely accessible, my code is built to load on your
+                customer's device in under three seconds. I review the
+                blueprints carefully before launching the code.
+              </p>
+              <a
+                href="work.html"
+                class="badge badge-accent top-3rem no-underline badge-massive">
+                See demonstrations &rarr;
+              </a>
+            </section>
+          </section>
+        </div>
+      </section>
+
+      <section class="cta-banner">
+        <a
+          href="contact.html"
+          class="cta-link border-top"
+          aria-label="Navigate to contact page to start a project">
+          <div class="container overflow-hidden">
+            <h2 class="cta-massive-text">
+              LET'S ENGINEER
+              <span class="serif-italic">something</span>&nbsp;&rarr;
+            </h2>
+          </div>
+        </a>
+      </section>
+    </main>
+
+    <footer class="swiss-footer">
+      <div class="swiss-row-top swiss-border-bottom">
+        <h2 class="swiss-massive-type">CRUZ PLAMONDON</h2>
+      </div>
+
+      <div class="swiss-row-mid swiss-border-bottom">
+        <a href="index.html" class="swiss-col-4 swiss-border-right">
+          <div class="swiss-col-header">
+            <span>[ 01 ] HOMEPAGE</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2l2.4 6.6 6.6 2.4-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Return to the main system terminal and dashboard overview.
+          </p>
+        </a>
+
+        <a href="work.html" class="swiss-col-4 swiss-border-right">
+          <div class="swiss-col-header">
+            <span>[ 02 ] FEATURED WORK</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="8" cy="12" r="7" />
+              <circle cx="16" cy="12" r="7" opacity="0.6" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Explore live architectural capabilities and interactive case
+            studies.
+          </p>
+        </a>
+
+        <a href="philosophy.html" class="swiss-col-4 swiss-border-right">
+          <div class="swiss-col-header">
+            <span>[ 03 ] PHILOSOPHY</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <rect x="2" y="4" width="6" height="6" />
+              <rect x="9" y="4" width="6" height="6" />
+              <rect x="16" y="4" width="6" height="6" />
+              <rect x="2" y="11" width="6" height="6" />
+              <rect x="9" y="11" width="6" height="6" />
+              <rect x="16" y="11" width="6" height="6" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Read the foundational developer tenets, design logic, and rules.
+          </p>
+        </a>
+
+        <a href="contact.html" class="swiss-col-4">
+          <div class="swiss-col-header">
+            <span>[ 04 ] CONTACT</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <rect x="3" y="5" width="18" height="3" />
+              <rect x="3" y="10" width="12" height="3" />
+              <rect x="3" y="15" width="18" height="3" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Initialize direct transmission and view operator specifications.
+          </p>
+        </a>
+      </div>
+
+      <div class="swiss-row-bottom">
+        <div class="swiss-col-half swiss-border-right">
+          <h4 class="swiss-subheading">CURRENT RIG SPECS</h4>
+          <p class="swiss-text-body">
+            Located in Winnipeg, Manitoba (Central Timezone).<br />
+            Operating within the PTEC Web Development ecosystem.<br />
+            Hardware: ASUS TUF Framework // Focus: Brutalist Aesthetics.<br />
+            Currently accepting inquiries for structural web deployments.
+          </p>
+
+          <div class="top-2rem">
+            <a
+              href="https://github.com/cruz-in"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="swiss-social-anchor">
+              &#128279; SOURCE CODES // GITHUB PROFILE &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div class="swiss-col-half flex-bottom-right">
+          <div class="swiss-status-top">
+            <span class="swiss-subheading">SYSTEM STATUS</span>
+            <span class="swiss-text-body text-right">2026 // ONLINE</span>
+          </div>
+          <h2 class="swiss-status-massive">OPTIMAL</h2>
+        </div>
+      </div>
+
+      <div class="swiss-row-copyright">
+        <p class="swiss-copyright-text">
+          &copy; 2026 Cruz Plamondon &mdash; PTEC Web Development. All Rights
+          Reserved.
+        </p>
+      </div>
+    </footer>
+
+    <a href="#" class="back-to-top" aria-label="Back to top">&#8593;</a>
+
+    <script src="JavaScripts/searchData.js"></script>
+    <script src="JavaScripts/scripts.js"></script>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VRAM Emulation | Lab</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet" />
+
+    <link rel="stylesheet" href="stylesheets/main.css" />
+
+    <style>
+      /* =====================================================================
+        GRADE 9 EXPLANATION: FULLSCREEN CANVAS ISOLATION
+        Because this page is a standalone laboratory, we put its specific 
+        styles right here in the HTML file. 
+        
+        The 'lab-matrix-body' class strips away all scrollbars and margins, 
+        forcing the screen to be exactly 100% of the viewport width (100vw) 
+        and height (100vh). We use absolute positioning to pin the text and 
+        the back button to the corners, letting the liquid canvas take over 
+        the entire background.
+        ===================================================================== 
+      */
+
+      /* Forces the page to act like a locked, dark monitor screen */
+      .lab-matrix-body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden; /* Kills the scrollbars instantly */
+        background-color: #141414 !important; /* Pitch black background */
+      }
+
+      /* Pins the invisible canvas drawing board to the absolute edges */
+      #fluid-fullscreen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        cursor: crosshair; /* Changes the mouse pointer to a target */
+      }
+
+      /* Protects the text from being clicked so it doesn't interrupt the canvas */
+      .lab-overlay {
+        position: absolute;
+        top: 4rem;
+        left: 4rem;
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      .lab-title {
+        font-family: "Bebas Neue", serif;
+        font-size: clamp(4rem, 6vw, 8rem);
+        color: #ffffff;
+        line-height: 0.9;
+        margin: 0;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8); /* Helps text pop off the glowing background */
+      }
+
+      .lab-status {
+        font-family: "Inter", sans-serif;
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: var(--accent-color);
+        letter-spacing: 2px;
+        margin-top: 1rem;
+      }
+
+      /* The Escape Hatch: Pins the exit button to the bottom left */
+      .btn-exit-lab {
+        position: absolute;
+        bottom: 4rem;
+        left: 4rem;
+        pointer-events: auto; /* Re-enables clicking specifically for this button */
+        border-color: rgba(255, 255, 255, 0.2) !important;
+        background: transparent !important;
+        color: #ffffff !important;
+        z-index: 10;
+      }
+
+      /* Inverts the button color on hover so the user knows it's active */
+      .btn-exit-lab:hover {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+    </style>
+  </head>
+  <body class="lab-matrix-body">
+    <canvas id="fluid-fullscreen"></canvas>
+
+    <div class="lab-overlay">
+      <h1 class="lab-title">VRAM<br />EMULATION</h1>
+      <div class="lab-status">[ ENVIRONMENT: UNCONSTRAINED ]</div>
+    </div>
+
+    <a href="work.html" class="badge btn-exit-lab no-underline"
+      >&larr; TERMINATE & RETURN</a
+    >
+
+    <script src="JavaScripts/scripts.js"></script>
+  </body>
+</html>

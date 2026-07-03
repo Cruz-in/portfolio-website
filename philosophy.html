@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cruz Plamondon | Philosophy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&family=Playfair+Display:ital@1&display=swap"
+      rel="stylesheet" />
+
+    <link rel="stylesheet" href="stylesheets/main.css" />
+    <style>
+      /* =====================================================================
+        GRADE 9 EXPLANATION: MAPPED TRACK GRIDS
+        This uses a unique CLASS (.track-grid) to divide our philosophy text chunks 
+        into an invisible three-column structural grid system.
+        =====================================================================
+      */
+
+      .track-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 6rem;
+        column-gap: 6rem;
+        position: relative;
+        padding: 4rem 0;
+      }
+
+      /* Decorative vertical dividers mapping modular alignment paths */
+      .track-grid::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(33.333% - 3rem);
+        width: 1px;
+        background-color: var(--border-color);
+        opacity: 0.2;
+        z-index: -1;
+      }
+
+      .track-grid::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(66.666% + 3rem);
+        width: 1px;
+        background-color: var(--border-color);
+        opacity: 0.2;
+        z-index: -1;
+      }
+
+      .track-node {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+
+      /* CLASS uniform used to scale major manifestos cleanly across columns */
+      .span-track-2 {
+        grid-column: span 2;
+      }
+
+      .track-meta-num {
+        font-family: "Inter", sans-serif;
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: var(--accent-color);
+        letter-spacing: 1px;
+        margin-bottom: 2rem;
+        display: block;
+        border-bottom: 1px solid var(--accent-color);
+        padding-bottom: 0.5rem;
+        width: max-content;
+      }
+
+      .track-media {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        object-fit: cover;
+        border-bottom: 1px solid var(--border-color);
+        filter: grayscale(100%) contrast(120%);
+        mix-blend-mode: multiply;
+        border-radius: 2px;
+      }
+
+      .null-space-anchor {
+        min-height: 1px;
+      }
+
+      @media (max-width: 900px) {
+        .track-grid {
+          grid-template-columns: 1fr;
+          row-gap: 6rem;
+        }
+        .track-grid::before,
+        .track-grid::after {
+          display: none;
+        }
+        .span-track-2 {
+          grid-column: span 1;
+        }
+      }
+    </style>
+
+    <script>
+      if (localStorage.getItem("system-theme") === "dark") {
+        document.documentElement.classList.add("dark-mode");
+      }
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to Content</a>
+    <div id="progress-bar"></div>
+
+    <!-- START: DUAL-CLUSTER GLASS PILL NAVIGATION -->
+    <nav class="nav-glass-pill" id="main-nav-pill" aria-label="Main Navigation">
+      <div class="nav-pill-list" id="nav-pill-list">
+        <div class="nav-lens" id="nav-lens" aria-hidden="true"></div>
+
+        <!-- PRIMARY NAVIGATION CLUSTER -->
+        <ul class="nav-cluster primary-cluster">
+          <li class="nav-item is-active">
+            <a href="index.html" class="nav-icon" aria-label="Homepage">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              </svg>
+            </a>
+            <span class="nav-label">HOME</span>
+          </li>
+
+          <li class="nav-item">
+            <a href="work.html" class="nav-icon" aria-label="Featured Work">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </a>
+            <span class="nav-label">WORK</span>
+            <div class="glass-flyout edge-align-left">
+              <span class="flyout-title">FEATURED WORK</span>
+              <a href="index.html#featured-work">Treaty 1 Architecture</a>
+              <a href="index.html#about">Capabilities Matrix</a>
+              <a href="work.html">Interactive Laboratory</a>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a
+              href="philosophy.html"
+              class="nav-icon"
+              aria-label="Developer Philosophy">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path
+                  d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </a>
+            <span class="nav-label">PHIL</span>
+            <div class="glass-flyout">
+              <span class="flyout-title">PHILOSOPHY</span>
+              <a href="philosophy.html#tenets">The War on Load</a>
+              <a href="philosophy.html#tenets">First Eye Psychology</a>
+              <a href="philosophy.html#tenets">Chameleon Aesthetic</a>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a
+              href="contact.html"
+              class="nav-icon"
+              aria-label="Contact Operator">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </a>
+            <span class="nav-label">EMAIL</span>
+            <div class="glass-flyout">
+              <span class="flyout-title">EMAIL & CONTACT</span>
+              <a href="contact.html">Direct message</a>
+              <a href="contact.html#personal-specs">Operator profile</a>
+              <a href="https://github.com/cruz-in" target="_blank"
+                >GitHub Repository</a
+              >
+            </div>
+          </li>
+        </ul>
+
+        <!-- SYSTEM CONTROLS CLUSTER -->
+        <ul class="nav-cluster system-cluster">
+          <li class="nav-item">
+            <button class="nav-icon" aria-label="System Settings">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </button>
+            <div class="glass-flyout edge-align-right">
+              <span class="flyout-title">SYSTEM PREFS</span>
+
+              <button
+                class="composite-search-btn interactive-button-action"
+                aria-label="Open Search">
+                <div class="search-glass-puck">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </div>
+                <div class="search-solid-pill">SEARCH PLATFORM</div>
+              </button>
+
+              <div class="glass-toggle-wrapper margin-top-1">
+                <input
+                  type="checkbox"
+                  id="theme-switch"
+                  class="theme-switch-input"
+                  aria-label="Toggle Dark Mode" />
+                <label for="theme-switch" class="glass-toggle-label">
+                  <span class="glass-toggle-knob">
+                    <svg
+                      class="toggle-sun"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg
+                      class="toggle-moon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <path
+                        d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                  </span>
+                </label>
+                <span class="toggle-label-text">DARK MODE</span>
+              </div>
+
+              <div class="glass-toggle-wrapper margin-top-1">
+                <input
+                  type="checkbox"
+                  id="audio-switch"
+                  class="audio-switch-input theme-switch-input"
+                  aria-label="Toggle System Audio Mute" />
+                <label for="audio-switch" class="glass-toggle-label">
+                  <span class="glass-toggle-knob">
+                    <svg
+                      class="toggle-audio-on"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <path
+                        d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <svg
+                      class="toggle-audio-off"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2">
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <line x1="23" y1="9" x2="17" y2="15"></line>
+                      <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                  </span>
+                </label>
+                <span class="toggle-label-text">MUTE AUDIO</span>
+              </div>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <button
+              id="stealth-toggle-btn"
+              class="nav-icon"
+              aria-label="Hide UI">
+              <svg
+                class="icon-eye-off"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+              <svg
+                class="icon-eye"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                style="display: none">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="drawer-overlay" aria-hidden="true"></div>
+    <section class="drawer-panel" aria-hidden="true">
+      <div class="drawer-header">
+        <form class="drawer-form">
+          <label for="drawer-search-input" class="sr-only">Search</label>
+          <input
+            type="text"
+            id="drawer-search-input"
+            placeholder="SEARCH PORTFOLIO..."
+            autocomplete="off"
+            disabled />
+        </form>
+      </div>
+      <section class="drawer-content">
+        <h4>QUICK LINKS</h4>
+        <ul class="drawer-results"></ul>
+      </section>
+    </section>
+
+    <main id="main-content">
+      <section class="hero-section hero-reverse border-bottom">
+        <div class="hero-left">
+          <section>
+            <h1 class="hero-display margin-zero hero-title-philosophy">
+              logic<span class="accent-dot">.</span>
+            </h1>
+            <p class="hero-subtitle">DEVELOPER PHILOSOPHY</p>
+          </section>
+          <div class="scroll-wrapper">
+            <a
+              href="#tenets"
+              class="btn-scroll"
+              aria-label="Scroll down to Tenets section"
+              >&darr;</a
+            >
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="color-block-accent"></div>
+          <section class="padding-box card-dark hero-terminal">
+            <h3 class="terminal-title">[ Strategic Directive ]</h3>
+            <p class="body-large top-1rem">
+              My entire website building philosophy is based on absolute intent.
+              Every single grid line, font size choice, and button color serves
+              a clear, measurable business purpose. I build systems that feel
+              calm, look professional, and keep the user in complete control.
+            </p>
+          </section>
+        </div>
+      </section>
+
+      <section id="tenets" class="container section-padding">
+        <h2 class="section-title margin-bottom-lg">CORE PRINCIPLES</h2>
+
+        <div class="track-grid">
+          <section class="track-node span-track-2">
+            <span class="track-meta-num">TRACK_01 // SPEED IS REVENUE</span>
+            <h3 class="track-accent-head">
+              CODE IS <em class="serif-italic">law.</em>
+            </h3>
+            <p class="body-large">
+              An award-winning visual layout is completely useless if the
+              underlying website engine runs slowly. If your website takes more
+              than three seconds to display its content, your customers will
+              leave out of frustration and go directly to your competitors. I
+              write incredibly clean, lightweight code without heavy plugins to
+              guarantee your site loads instantly.
+            </p>
+          </section>
+
+          <section class="track-node">
+            <span class="track-meta-num"
+              >TRACK_02 // THE FIRST EYE IMPRESSION PSYCHOLOGY</span
+            >
+            <h3 class="track-accent-head">
+              THE <em class="serif-italic">halo</em> EFFECT.
+            </h3>
+            <p class="body-large">
+              The human brain makes a subconscious judgment about the
+              credibility of your business within the first 50 milliseconds of
+              landing on your website. Making your homepage look professional
+              immediately is key to keeping clients on your site. I design main
+              web layouts that establish instant market authority, building
+              strong trust with your buyers right away.
+            </p>
+          </section>
+
+          <section class="track-node">
+            <span class="track-meta-num"
+              >TRACK_03 // DESIGNED FOR FAST SKIMMERS</span
+            >
+            <img
+              src="images/blurred-focus.jpg"
+              class="track-media bottom-2rem"
+              alt="Abstract alignment map" />
+            <h3 class="track-accent-head">
+              WAR ON <em class="serif-italic">load.</em>
+            </h3>
+            <p class="body-large">
+              People do not read websites word-for-word anymore; they skim
+              through them quickly. Based on how the human brain processes
+              visual data, I design layouts specifically for fast skimmers,
+              reducing the mental effort needed to read your pages. I choose
+              absolute clarity over complicated layouts, cutting down wordiness
+              to its most powerful form. By using balanced grids, purposeful
+              empty space, and clear hierarchies to naturally guide the
+              customer's eyes, I deliver a smooth, stress-free user experience.
+            </p>
+          </section>
+
+          <section class="track-node">
+            <span class="track-meta-num"
+              >TRACK_04 // THE PREMIUM FINISHING TOUCH</span
+            >
+            <img
+              src="images/neo-morphism-poster.jpg"
+              class="track-media bottom-2rem"
+              alt="Abstract architectural rendering" />
+            <h3 class="track-accent-head">
+              PEAK-END <em class="serif-italic">polish.</em>
+            </h3>
+            <p class="body-large">
+              I believe absolute quality lives in the hidden layers. I focus
+              heavily on small interactive movements that a user might barely
+              notice consciously—such as clean button color shifts, text that
+              scales smoothly when resizing screens, and crisp focus lines.
+              These tiny, polished details create a continuous feeling of
+              professional craftsmanship throughout the user's visit, signaling
+              that your business operates at the highest standards.
+            </p>
+          </section>
+
+          <div class="null-space-anchor" aria-hidden="true"></div>
+
+          <section class="track-node span-track-2">
+            <span class="track-meta-num"
+              >TRACK_05 // TARGET MARKET ADAPTABILITY</span
+            >
+            <h3 class="track-accent-head">
+              CHAMELEON <em class="serif-italic">aesthetic.</em>
+            </h3>
+            <p class="body-large">
+              I am an engineer, not just a stylist who can only build one look.
+              My work focuses entirely on visual flexibility driven by clear
+              business goals. I study your specific target market and adjust the
+              styling layers to naturally guide your customer's attention to
+              where it matters most. Because my styling engine is kept
+              completely separate from the page text, I can easily apply
+              high-end luxury layouts, crisp minimalist designs, or bold modern
+              branding. The visual look changes to match your brand, but the
+              fast engine underneath stays perfectly optimized.
+            </p>
+          </section>
+
+          <section class="track-node">
+            <span class="track-meta-num"
+              >TRACK_06 // PROTECTING YOUR INVESTMENT</span
+            >
+            <h3 class="track-accent-head">
+              STRATEGIC <em class="serif-italic">trust.</em>
+            </h3>
+            <p class="body-large">
+              When you hire me to build your platform, you are buying peace of
+              mind through professional accountability. The true value of a
+              custom website lies in the strategic planning and research done
+              before coding even begins. I act as a professional partner who
+              protects your project from tech errors, security flaws, and sudden
+              price increases. I manage the technical execution from start to
+              finish, delivering a highly resilient, self-contained system that
+              allows you to easily update your own text and photos in the future
+              without fear of breaking the layout.
+            </p>
+          </section>
+        </div>
+      </section>
+
+      <section class="cta-banner">
+        <a
+          href="contact.html"
+          class="cta-link border-top"
+          aria-label="Navigate to contact page to start a project">
+          <div class="container overflow-hidden">
+            <h2 class="cta-massive-text">
+              LET'S ENGINEER
+              <span class="serif-italic">something</span>&nbsp;&rarr;
+            </h2>
+          </div>
+        </a>
+      </section>
+    </main>
+
+    <footer class="swiss-footer">
+      <div class="swiss-row-top swiss-border-bottom">
+        <h2 class="swiss-massive-type">CRUZ PLAMONDON</h2>
+      </div>
+
+      <div class="swiss-row-mid swiss-border-bottom">
+        <a href="index.html" class="swiss-col-4 swiss-border-right">
+          <div class="swiss-col-header">
+            <span>[ 01 ] HOMEPAGE</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2l2.4 6.6 6.6 2.4-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Return to the main system terminal and dashboard overview.
+          </p>
+        </a>
+
+        <a href="work.html" class="swiss-col-4 swiss-border-right">
+          <div class="swiss-col-header">
+            <span>[ 02 ] FEATURED WORK</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="8" cy="12" r="7" />
+              <circle cx="16" cy="12" r="7" opacity="0.6" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Explore live architectural capabilities and interactive case
+            studies.
+          </p>
+        </a>
+
+        <a href="philosophy.html" class="swiss-col-4 swiss-border-right">
+          <div class="swiss-col-header">
+            <span>[ 03 ] PHILOSOPHY</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <rect x="2" y="4" width="6" height="6" />
+              <rect x="9" y="4" width="6" height="6" />
+              <rect x="16" y="4" width="6" height="6" />
+              <rect x="2" y="11" width="6" height="6" />
+              <rect x="9" y="11" width="6" height="6" />
+              <rect x="16" y="11" width="6" height="6" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Read the foundational developer tenets, design logic, and rules.
+          </p>
+        </a>
+
+        <a href="contact.html" class="swiss-col-4">
+          <div class="swiss-col-header">
+            <span>[ 04 ] CONTACT</span>
+            <span class="swiss-arrow">&rarr;</span>
+          </div>
+          <div class="swiss-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <rect x="3" y="5" width="18" height="3" />
+              <rect x="3" y="10" width="12" height="3" />
+              <rect x="3" y="15" width="18" height="3" />
+            </svg>
+          </div>
+          <p class="swiss-col-desc">
+            Initialize direct transmission and view operator specifications.
+          </p>
+        </a>
+      </div>
+
+      <div class="swiss-row-bottom">
+        <div class="swiss-col-half swiss-border-right">
+          <h4 class="swiss-subheading">CURRENT RIG SPECS</h4>
+          <p class="swiss-text-body">
+            Located in Winnipeg, Manitoba (Central Timezone).<br />
+            Operating within the PTEC Web Development ecosystem.<br />
+            Hardware: ASUS TUF Framework // Focus: Brutalist Aesthetics.<br />
+            Currently accepting inquiries for structural web deployments.
+          </p>
+
+          <div class="top-2rem">
+            <a
+              href="https://github.com/cruz-in"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="swiss-social-anchor">
+              &#128279; SOURCE CODES // GITHUB PROFILE &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div class="swiss-col-half flex-bottom-right">
+          <div class="swiss-status-top">
+            <span class="swiss-subheading">SYSTEM STATUS</span>
+            <span class="swiss-text-body text-right">2026 // ONLINE</span>
+          </div>
+          <h2 class="swiss-status-massive">OPTIMAL</h2>
+        </div>
+      </div>
+
+      <div class="swiss-row-copyright">
+        <p class="swiss-copyright-text">
+          &copy; 2026 Cruz Plamondon &mdash; PTEC Web Development. All Rights
+          Reserved.
+        </p>
+      </div>
+    </footer>
+
+    <a href="#" class="back-to-top" aria-label="Back to top">&#8593;</a>
+
+    <script src="JavaScripts/searchData.js"></script>
+    <script src="JavaScripts/scripts.js"></script>
+  </body>
+</html>
