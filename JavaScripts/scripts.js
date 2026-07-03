@@ -52,42 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.documentElement.classList.add("is-booted");
   }
 
-  /* =====================================================================
-     02. FOUC-FREE THEME EVALUATION (Dark Mode)
-  ===================================================================== */
   const htmlRoot = document.documentElement;
-  const themeToggles = document.querySelectorAll(".theme-toggle");
-
-  function updateThemeIcons(isDark) {
-    document.querySelectorAll(".theme-icon").forEach((icon) => {
-      icon.innerHTML = isDark ? "&#9728;" : "&#127769;";
-    });
-  }
-
-  updateThemeIcons(htmlRoot.classList.contains("dark-mode"));
-
-  themeToggles.forEach((toggle) => {
-    toggle.addEventListener("click", () => {
-      htmlRoot.classList.toggle("dark-mode");
-      const isDark = htmlRoot.classList.contains("dark-mode");
-      localStorage.setItem("system-theme", isDark ? "dark" : "light");
-      updateThemeIcons(isDark);
-    });
-  });
-
-  /* =====================================================================
-     03. CLASS-BASED MOBILE HAMBURGER MORPH
-  ===================================================================== */
-  const hamburger = document.querySelector(".menu-hamburger");
-  const navList = document.querySelector(".nav-list");
-
-  if (hamburger && navList) {
-    hamburger.addEventListener("click", () => {
-      const isExpanded = hamburger.getAttribute("aria-expanded") === "true";
-      hamburger.setAttribute("aria-expanded", !isExpanded);
-      navList.classList.toggle("is-mobile-open", !isExpanded);
-    });
-  }
 
   /* =====================================================================
      04. ACCESSIBLE SCROLL PROGRESS OVERRIDE
@@ -168,13 +133,35 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".interactive-button-action"),
   ).filter((btn) => btn.textContent.trim() === "SEARCH PLATFORM");
 
+  let drawerLastFocused = null;
+
+  function trapDrawerFocus(e) {
+    if (e.key !== "Tab" || !drawerPanel) return;
+    const focusable = drawerPanel.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    );
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
   function toggleDrawer(forceOpen = false) {
     if (!drawerPanel) return;
     const isClosed = !drawerPanel.classList.contains("is-active");
     if (isClosed || forceOpen) {
+      drawerLastFocused = document.activeElement;
       drawerPanel.classList.add("is-active");
+      drawerPanel.setAttribute("aria-hidden", "false");
       document.body.classList.add("is-locked");
       if (drawerOverlay) drawerOverlay.classList.add("is-active");
+      document.addEventListener("keydown", trapDrawerFocus);
       if (searchInput) {
         searchInput.disabled = false;
         setTimeout(() => searchInput.focus(), 200);
@@ -182,9 +169,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } else {
       drawerPanel.classList.remove("is-active");
+      drawerPanel.setAttribute("aria-hidden", "true");
       document.body.classList.remove("is-locked");
       if (drawerOverlay) drawerOverlay.classList.remove("is-active");
       if (searchInput) searchInput.value = "";
+      document.removeEventListener("keydown", trapDrawerFocus);
+      if (drawerLastFocused) drawerLastFocused.focus();
     }
   }
 
@@ -357,6 +347,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const now = new Date();
       terminalClock.textContent = now.toLocaleTimeString("en-US", {
         hour12: false,
+        timeZone: "America/Winnipeg",
       });
     }, 1000);
   }

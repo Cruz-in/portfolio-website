@@ -96,9 +96,9 @@ html {
   font-size: 62.5%; /* Sets 1rem = 10px. This makes math way easier! */
   letter-spacing: normal;
   scroll-behavior: smooth;
-  overflow-x: hidden !important; /* The Ultimate Failsafe: Prevents horizontal scrolling */
-  width: 100% !important;
-  max-width: 100vw !important;
+  overflow-x: hidden; /* Backstop only; root cause was 100vw elements below the scrollbar-inclusive viewport width */
+  width: 100%;
+  max-width: 100vw;
   font-weight: 600;
 }
 
@@ -107,9 +107,10 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-size: 1.6rem;
-  overflow-x: hidden !important;
-  width: 100% !important;
-  max-width: 100vw !important;
+  font-synthesis: none; /* Bebas Neue only ships weight 400; stops the browser faux-bolding it at weight 800 */
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
   transition:
     background-color 0.3s ease,
     color 0.3s ease,
@@ -150,7 +151,7 @@ body::after {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
   background-size: 24px 24px;
@@ -165,7 +166,7 @@ body::before {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="90" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.06"/%3E%3C/svg%3E');
   pointer-events: none;
@@ -980,7 +981,7 @@ html.dark-mode .glass-toggle-knob {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background-color: var(--bg-inverse);
   color: var(--text-inverse);
@@ -1178,6 +1179,7 @@ html.dark-mode .intro-logo {
   z-index: 2;
   width: 75%;
   max-height: 85vh;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   transform: translate3d(0, 80px, 0);
   opacity: 0;
@@ -1756,7 +1758,7 @@ body.is-exiting .parent-sequence.is-assembled > * {
 .marquee-container {
   display: flex;
   overflow: hidden;
-  width: 100vw;
+  width: 100%;
   padding: 1.5rem 0;
   background-color: var(--bg-inverse);
   color: var(--accent-color) !important;
@@ -1852,7 +1854,7 @@ body.is-exiting .parent-sequence.is-assembled > * {
   border-top: var(--border-thick);
   border-bottom: var(--border-thick);
   color: var(--text-primary);
-  width: 100vw;
+  width: 100%;
   max-width: 100%;
 }
 
@@ -2436,6 +2438,9 @@ body.is-exiting .parent-sequence.is-assembled > * {
 
 /* Reduced Motion Accessibility */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
   *,
   *::before,
   *::after {
@@ -2764,6 +2769,7 @@ html.dark-mode .drawer-results button:hover {
 .project-image-frame {
   width: 100%;
   max-width: 100%;
+  aspect-ratio: 16 / 10;
   height: auto;
   min-height: auto;
   background-color: var(--bg-inverse);
@@ -2833,6 +2839,51 @@ html.dark-mode .drawer-results button:hover {
   top: 2rem;
   outline: 3px solid var(--text-primary);
   outline-offset: 2px;
+}
+
+/* =====================================================================
+   17. PRINT STYLESHEET
+   Strips the digital interface (nav, canvases, overlays, dot-grid) down
+   to a plain monochrome document for the "LAUNCH PRINTER STYLESHEET
+   PROFILE" demo on work.html.
+   ===================================================================== */
+@media print {
+  * {
+    color: #000 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body::after {
+    display: none !important;
+  }
+
+  .nav-glass-pill,
+  .drawer-overlay,
+  .drawer-panel,
+  .intro-screen,
+  .marquee-container,
+  .back-to-top,
+  .skip-link,
+  .text-vertical-badge,
+  canvas,
+  audio,
+  .interactive-button-action,
+  button {
+    display: none !important;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: underline !important;
+  }
+
+  main,
+  body {
+    width: 100% !important;
+    overflow: visible !important;
+  }
 }
 
 /* =====================================================================
